@@ -3,7 +3,7 @@ import { graphql } from 'relay-runtime';
 import { useFragment } from 'react-relay';
 import Card from "./Card";
 import Heading from "./Heading";
-import PosterByline, { type Props as PosterBylineProps } from "./PosterByline";
+import PosterByline from "./PosterByline";
 import StorySummary from "./StorySummary";
 import Image from "./Image";
 import Timestamp from './Timestamp';
@@ -15,10 +15,7 @@ const StoryFragment = graphql`
     summary
     createdAt
     poster {
-      name
-      profilePicture {
-        url
-      }
+      ...PosterBylineFragment
     }
     thumbnail {
       url
