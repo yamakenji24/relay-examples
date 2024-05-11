@@ -8,6 +8,7 @@ import StorySummary from "./StorySummary";
 import Image from "./Image";
 import Timestamp from './Timestamp';
 import type { StoryFragment$key } from "./__generated__/StoryFragment.graphql";
+import StoryCommentsSection from './StoryCommentsSection';
 
 const StoryFragment = graphql`
   fragment StoryFragment on Story {
@@ -20,6 +21,7 @@ const StoryFragment = graphql`
     thumbnail {
       ...ImageFragment @arguments(width: 400)
     }
+    ...StoryCommentsSectionFragment
   }
 `;
 
@@ -28,15 +30,16 @@ type Props = {
 };
 
 export default function Story({ story }: Props): React.ReactElement {
-  const {poster, title, createdAt, thumbnail, summary} = useFragment(StoryFragment, story);
+  const data = useFragment(StoryFragment, story);
 
   return (
     <Card>
-      <PosterByline poster={poster} />
-      <Heading>{title}</Heading>
-      <Timestamp time={createdAt} />
-      <Image image={thumbnail} width={400} height={400} />
-      <StorySummary summary={summary} />
+      <PosterByline poster={data.poster} />
+      <Heading>{data.title}</Heading>
+      <Timestamp time={data.createdAt} />
+      <Image image={data.thumbnail} width={400} height={400} />
+      <StorySummary summary={data.summary} />
+      <StoryCommentsSection story={data} />
     </Card>
   );
 }
